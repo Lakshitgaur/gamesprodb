@@ -1,0 +1,1 @@
+﻿http://www.giantbomb.com/api/games/?api_key=2b4e4a8e443d2571c5a9f09b0024184afc4674f1&limit=20&filter=expected_release_year:2014,expected_release_month:12&format=json

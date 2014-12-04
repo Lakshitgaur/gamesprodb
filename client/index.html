@@ -1,0 +1,268 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="GameDB">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GamesPro DB</title>
+    
+        
+  
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.js"></script>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/find_videos.js"></script>
+    <script src="js/googleOauth.js"></script>
+    <script src="js/angularOauth.js"></script>
+    <!-- Add custom CSS here -->
+    <link href="css/business-casual.css" rel="stylesheet">
+    
+  
+    <script type="text/javascript">
+        google.load("feeds", "1") //Load Google Ajax Feed API (version 1)
+    </script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/vertical.news.slider.min.js"></script>
+
+    
+</head>
+
+<body id="body">
+
+
+    <canvas id="canvas"></canvas>
+
+    <div class="brand">GamesPro Game Database</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Business Casual</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li><img id="logo" src="img/logo.png" /></li>
+                    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
+                    <li><a href="#searchGames"><i class="fa fa-comment"></i> Search Game</a></li>
+                    <li><a href="#upcomingvideo"><i class="fa fa-comment"></i> Videos</a>
+                    <li><a href="#reviews"><i class="fa fa-comment"></i> Reviews</a>
+                    <li><a href="#login"><i class="fa fa-comment"></i> Login</a>
+
+
+</ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="box">
+                <div class="col-lg-12 text-center">
+                    <div id="carousel-example-generic" class="carousel slide">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators hidden-xs">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img class="img-responsive img-full" src="img/destiny.jpg" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive img-full" src="img/gta.jpg" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive img-full" src="img/evil.jpg" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive img-full" src="img/sunset.jpg" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive img-full" src="img/grid.jpg" alt="">
+                            </div>
+                        </div>
+
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                            <span class="icon-prev"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                            <span class="icon-next"></span>
+                        </a>
+                    </div>
+                    <h2>
+                        <small>Welcome to</small>
+                    </h2>
+                    <h1>
+                        <span class="brand-name">GamesPro Gaming Database</span>
+                    </h1>
+                    <hr class="tagline-divider">
+                    <h2>
+                        <small>By <strong>Lakshit Gaur</strong></small>
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div ng-view></div>
+
+        <div class="row">
+            <div class="box">
+                <div class="col-lg-12">
+
+                    <div class="row">
+                        <div class="box">
+                            <div class="col-lg-12">
+
+                                <hr style="background:#F87431; border:0; height:7px" />
+                                <h2 class="intro-text text-center">
+                                    Upcoming<strong> Games</strong>
+
+                                </h2>
+
+
+                                <hr class="visible-xs">
+
+
+                                <hr style="background:#F87431; border:0; height:7px" />
+
+                                <div class="diy-slideshow" ng-controller="LatestGameCtrl">
+                                    <figure class="show">
+
+                                        <figcaption>Image caption goes here.</figcaption>
+                                    </figure>
+
+
+                                    <figure>
+                                        s as needed<span class="prev">«</span>
+                                        <span class="next">»</span>
+
+                                    </figure>
+                                </div>
+
+                                <div id="carousel-example-generic" class="carousel slide" ng-controller="LatestGameCtrl">
+                                    <!-- Indicators -->
+                                    <ol class="carousel-indicators hidden-xs">
+                                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                        <li data-target="#carousel-example-generic" ng-repeat="g in gamelist" data-slide-to="{{$index + 1}}"</li>
+
+                                    </ol>
+
+                                    <!-- Wrapper for slides -->
+                                    <div class="carousel-inner">
+                                        <div class="item active">
+                                            <img class="img-responsive" src="img/shadow.jpg" alt="">
+                                        </div>
+                                        <div class="item" ng-repeat="g in gamelist">
+                                            <a href="{{g.site_detail_url}}"><img class="img-responsive " ng-src={{g.image.screen_url}} alt="" /></a>
+</div>
+
+                                    </div>
+
+                                    <!-- Controls -->
+                                    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                        <span class="icon-prev"></span>
+                                    </a>
+                                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                        <span class="icon-next"></span>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="box">
+                    <div class="col-lg-12">
+
+                        <div class="row">
+                            <div class="box">
+                                <div class="col-lg-12">
+
+                                    <hr style="background:#F87431; border:0; height:7px" />
+                                    <h2 class="intro-text text-center">
+                                        Latest<strong> Game News</strong>
+
+                                    </h2>
+
+
+                                    <hr class="visible-xs">
+
+
+                                    <hr style="background:#F87431; border:0; height:7px" />
+
+                                    <script type="text/javascript" src="js/News_feed.js"></script>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <h3>* All the data provided by Giant Bomb and YouTube</h3>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script>
+
+    // Activates the Carousel
+    $('.carousel').carousel({
+        interval: 5000
+    })
+    </script>
+    <script src="js/jquery.als-1.7.min.js"></script>
+
+    <script src="js/snowfall.js">
+
+
+    </script>
+   
+    <script type="text/javascript" src="js/Reviews.js"></script>
+    
+
+</body>
+
+
+
+</html>
