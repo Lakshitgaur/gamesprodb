@@ -14,14 +14,15 @@
             <hr style="background:#F87431; border:0; height:7px" />
             <div class="input-group">
                 <span class="input-group-btn">
-                    <button onclick="search_trend()" id="mybtn" type="button" data-loading-text="searching...">Highest rated games of all Time </button><br />
+                    <button onclick="search_trending()" id="mybtn" type="button" data-loading-text="searching...">Highest rated games of all Time </button><br />
                     <button onclick="search()" id="mybtn" type="button" data-loading-text="searching...">Most anticipated games </button><br />
                 </span>
             </div>
             <br />
-            <span class="input-group-btn">
+           
                 <input type="text" id="search" placeholder="Name of the Game" name="searcggame" />
-                <button onclick="listVideos(this.form.searcggame.value)" id="mybtn" type="button" data-loading-text="searching...">Search a game video </button><br />
+            <span class="input-group-btn">
+                <button onclick="search_trend()" id="mybtn" type="button" data-loading-text="searching...">Search a game video </button><br />
 
             </span>
             <br />

@@ -50,6 +50,7 @@ GameDB.config(['$routeProvider',
                templateUrl: 'views/authetication.html',
                controller: 'MainCtrl'
            }).
+           
       
 
         otherwise({

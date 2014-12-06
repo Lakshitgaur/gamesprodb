@@ -10,7 +10,74 @@ body {
     width:120px;
 }
 
+    #wrapper {
+            margin: 0 auto;
+            width: 78%;
+        }
 
+        #header {
+            width: auto;
+            padding: 10px;
+            border: 2px solid Black;
+            color: White;
+            height: auto;
+            background: #CC0000;
+            text-align: center;
+            font-size: xx-large;
+        }
+
+        option {
+     
+            background-color:lightblue ;
+        }
+
+        #leftcolumn {
+            color: #333;
+            border: 2px solid Black;
+            background: lightblue;
+            padding: 10px;
+            height: 480px;
+            width: 200px;
+            float: left;
+        }
+
+
+        #map-canvas {
+            height: 500px;
+            width: auto;
+            border: 2px solid Black;
+        }
+
+        #panel {
+            float: left;
+            height: auto;
+            background-color: darkblue;
+            padding: 5px;
+            border: 2px solid Black;
+            color: White;
+        }
+
+        #directionsPanel {
+            width: auto;
+            height: 200px;
+            overflow: scroll;
+            padding: 5px;
+            background-color: lightgoldenrodyellow;
+            border: 2px solid Black;
+            color: White;
+        }
+
+
+        #footer {
+            width: auto;
+            clear: both;
+            border: 2px solid Black;
+            background: #CC0000;
+            padding: 10px;
+            color: White;
+        }
+ 
+   
 canvas {
 	display: block;
     background: url(../img/farad.jpg) no-repeat ;
