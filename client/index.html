@@ -25,14 +25,32 @@
     <script src="js/angularOauth.js"></script>
     <!-- Add custom CSS here -->
     <link href="css/business-casual.css" rel="stylesheet">
-    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+
+    <!-- Include Thumbelina CSS. -->
+    <link rel="stylesheet" type="text/css" href="css/thumbelina.css" />
+
   
     <script type="text/javascript">
         google.load("feeds", "1") //Load Google Ajax Feed API (version 1)
     </script>
     <script src="js/jquery.min.js"></script>
     <script src="js/vertical.news.slider.min.js"></script>
+   
 
+    <style type="text/css">
+        /* Some styles for the containers */
+    
+        #slider3 {
+            position: relative;
+            margin-top: 40px;
+            width: 1100px;
+            height: 400px;
+            border-left: 1px solid #aaa;
+            border-right: 1px solid #aaa;
+            margin-bottom: 40px;
+        }
+    </style>
     
 </head>
 
@@ -128,11 +146,11 @@
             </div>
         </div>
 
-        <div ng-view></div>
+        <div ng-view ></div>
 
         <div class="row">
             <div class="box">
-                <div class="col-lg-12">
+                <div class="col-lg-12" ng-controller="LatestGameCtrl">
 
                     <div class="row">
                         <div class="box">
@@ -150,46 +168,24 @@
 
                                 <hr style="background:#F87431; border:0; height:7px" />
 
-                                <div class="diy-slideshow" ng-controller="LatestGameCtrl">
-                                    <figure class="show">
+                                
+                               
+                            </div>
+                            
+                               <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                                <div id="slider3">
+                                    <div class="thumbelina-but vert top">&#708;</div>
+                                    <ul>
+                                        
+                                        <li ng-repeat="g in gamelist"><a href="{{g.site_detail_url}}"><img class="img-responsive " ng-src={{g.image.super_url}} alt="" /></a></li>
 
-                                        <figcaption>Image caption goes here.</figcaption>
-                                    </figure>
-
-
-                                    <figure>
-                                        s as needed<span class="prev">«</span>
-                                        <span class="next">»</span>
-
-                                    </figure>
-                                </div>
-
-                                <div id="carousel-example-generic" class="carousel slide" ng-controller="LatestGameCtrl">
-                                    <!-- Indicators -->
-                                    <ol class="carousel-indicators hidden-xs">
-                                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                                        <li data-target="#carousel-example-generic" ng-repeat="g in gamelist" data-slide-to="{{$index + 1}}"</li>
-
-                                    </ol>
-
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner">
-                                        <div class="item active">
-                                            <img class="img-responsive" src="img/shadow.jpg" alt="">
-                                        </div>
-                                        <div class="item" ng-repeat="g in gamelist">
-                                            <a href="{{g.site_detail_url}}"><img class="img-responsive " ng-src={{g.image.screen_url}} alt="" /></a>
-</div>
-
-                                    </div>
-
-                                    <!-- Controls -->
-                                    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                                        <span class="icon-prev"></span>
-                                    </a>
-                                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                                        <span class="icon-next"></span>
-                                    </a>
+                                    </ul>
+                                    <div class="thumbelina-but vert bottom">&#709;</div>
                                 </div>
 
                             </div>
@@ -260,7 +256,29 @@
    
     <script type="text/javascript" src="js/Reviews.js"></script>
     
+    <script type="text/javascript">
+        $(function () {
 
+            $('#slider1').Thumbelina({
+                $bwdBut: $('#slider1 .left'),    // Selector to left button.
+                $fwdBut: $('#slider1 .right')    // Selector to right button.
+            });
+
+            $('#slider2').Thumbelina({
+                $bwdBut: $('#slider2 .left'),    // Selector to left button.
+                $fwdBut: $('#slider2 .right')    // Selector to right button.
+            });
+
+            $('#slider3').Thumbelina({
+                orientation: 'vertical',         // Use vertical mode (default horizontal).
+                $bwdBut: $('#slider3 .top'),     // Selector to top button.
+                $fwdBut: $('#slider3 .bottom')   // Selector to bottom button.
+            });
+
+        })
+    </script>
+    <!-- Include Thumbelina script. -->
+    <script type="text/javascript" src="js/thumbelina.js"></script>
 </body>
 
 

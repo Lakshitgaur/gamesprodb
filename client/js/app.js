@@ -3,27 +3,6 @@
   'phonecatControllers', 'googleOauth'
 ]);
 
-GameDB.config(function ($routeProvider) {
-    $routeProvider
-      .when('/access_token=:accessToken', {
-          template: '',
-          controller: function ($location,$rootScope) {
-              var hash = $location.path().substr(1);
-
-              var splitted = hash.split('&');
-              var params = {};
-
-              for (var i = 0; i < splitted.length; i++) {
-                  var param  = splitted[i].split('=');
-                  var key    = param[0];
-                  var value  = param[1];
-                  params[key] = value;
-                  $rootScope.accesstoken=params;
-              }
-              $location.path("/about");
-          }
-      })
-});
 GameDB.config(['$routeProvider',
   function ($routeProvider) {
       $routeProvider.
@@ -48,11 +27,35 @@ GameDB.config(['$routeProvider',
             }).
            when('/login', {
                templateUrl: 'views/authetication.html',
-               controller: 'MainCtrl'
+               controller: 'LoginController'
            }).
-           
-      
+          when('/register', {
+              templateUrl: 'views/register.html',
+              controller: 'RegController'
+            
+          }).
+           when('/regsuccess', {
+               templateUrl: 'views/RegSucess.html',
+               
 
+           }).
+      
+          
+      when('/loginsucss', {
+          templateUrl: 'views/loginsucss.html',
+          
+
+          controller: 'LoginController'
+
+      }).
+
+           when('/loginunssucss', {
+               templateUrl: 'views/loginunssucss.html',
+
+
+               controller: 'LoginController'
+
+           }).
         otherwise({
             redirectTo: 'views/News_page.html'
         });
@@ -75,46 +78,20 @@ GameDB.controller('GamesVid', function ($scope) {
     }
 });
 
-GameDB.controller('DemoCtrl', function ($rootScope, $scope, $window, Token) {
-    $scope.accessToken = Token.get();
 
-    $scope.authenticate = function () {
-        var extraParams = $scope.askApproval ? { approval_prompt: 'force' } : {};
-        Token.getTokenByPopup(extraParams)
-          .then(function (params) {
-              // Success getting token from popup.
-
-              // Verify the token before setting it, to avoid the confused deputy problem.
-              Token.verifyAsync(params.access_token).
-                then(function (data) {
-                    $rootScope.$apply(function () {
-                        $scope.accessToken = params.access_token;
-                        $scope.expiresIn = params.expires_in;
-
-                        Token.set(params.access_token);
-                    });
-                }, function () {
-                    alert("Failed to verify token.")
-                });
-
-          }, function () {
-              // Failure getting token from popup.
-              alert("Failed to get token from popup.");
-          });
-    };
-});
-
-GameDB.controller('MainCtrl', function ($scope) {
-    $scope.login=function() {
-        var client_id="your client id";
-        var scope="email";
-        var redirect_uri="http://localhost:9000";
-        var response_type="token";
-        var url="https://accounts.google.com/o/oauth2/auth?scope="+scope+"&client_id="+client_id+"&redirect_uri="+redirect_uri+
-        "&response_type="+response_type;
-        window.location.replace(url);
-    };
-});
+GameDB.controller('RegController', function ($scope, $http, $location) {
+    $scope.register = function () {
+        var regCredentials = {};
+        regCredentials["username"] = $scope.username;
+        regCredentials["password"] = $scope.password;
+        regCredentials["email"] = $scope.email;
+        console.log(regCredentials);
+        $http.post("/registerUser", regCredentials)
+            .success(function (response) {
+                $location.path("regsuccess");
+            });
+    }
+})
 
 GameDB.controller('homeCtrl', function ($scope) {
     // create a message to display in our view
@@ -129,7 +106,33 @@ GameDB.controller('BlogCtrl', function ($scope) {
     $scope.message = 'Contact us! JK. This is just a demo.';
 });
 
-
+GameDB.controller('LoginController', function ($scope, $http, $location) {
+    $scope.login = function () {
+        $scope.userdetail = "";
+        var loginCredentials = {};
+        loginCredentials["username"] = $scope.username;
+        loginCredentials["password"] = $scope.password;
+        console.log(loginCredentials);
+        $http.post("/validateLogin", loginCredentials)
+            .success(function (response) {
+                if (response.length > 0) {
+                    console.log(response);
+                    var user = response[0].username;
+                    console.log(user);
+                    $scope.userdetail = user;
+                    console.log($scope.userdetail);
+                    $location.path("loginsucss");
+                   
+                }
+                else
+                   { 
+                    console.log("username not found");
+                $scope.name = user;
+                $location.path("loginunssucss");
+            }
+            });
+    }
+})
 
 GameDB.controller('GameCtrl', function ($scope, $http) {
     var URL = "http://net4.ccs.neu.edu/home/rasala/simpleproxy/simpleproxy.aspx?url=|http://www.giantbomb.com/api/search/?api_key=2b4e4a8e443d2571c5a9f09b0024184afc4674f1&limit=12&format=json&query=type&resources=game&callback=ewq|";
@@ -195,7 +198,7 @@ GameDB.controller('Reviews', function ($scope) {
                 for (var i = 0; i < thefeeds.length; i++) {
                     var entrydate = new Date(thefeeds[i].publishedDate) //get date of entry
                     var entrydatestr = ' ' + entrydate.getFullYear() + "/" + (entrydate.getMonth() + 1) + "/" + entrydate.getDate()
-                    rssoutput += "<ul class='news-headlines'> <li class='selected'>" + thefeeds[i].link + "</li></ul><div class='news-preview'><div class='news-content'><a href='" + thefeeds[i].link + "'>" + thefeeds[i].title + "</a></u></h1>" + "<h3>" + "News Date:" + entrydatestr + "</h3>" + "<br />" + thefeeds[i].content + "</p></br></div></div>"
+                    rssoutput += "<h1><ul class='news-headlines'> <li class='selected'></li></ul><div class='news-preview'><div class='news-content'><a href='" + thefeeds[i].link + "'>" + thefeeds[i].title + "</a></u></h1>" + "<h3>" + "Reviews release Date:" + entrydatestr + "</h3>" + "<br />" + thefeeds[i].content + "</p></br></div></div> <hr style='background:#F87431; border:0; height:7px' />"
 
                 }
                 //        document.getElementByID("news-holder").innerHTML = rssoutput

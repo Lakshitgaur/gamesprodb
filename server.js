@@ -2,7 +2,9 @@
 //  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
-
+var mongojs = require('mongojs');
+var bodyParser = require('body-parser');
+var db = mongojs("gamesprodb",["login"]);
 
 /**
  *  Define the sample application.
@@ -114,7 +116,7 @@ var SampleApp = function() {
     self.initializeServer = function() {
         self.createRoutes();
         self.app = express();
-
+		self.app.use(bodyParser.json());
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {
             self.app.get(r, self.routes[r]);
@@ -145,7 +147,34 @@ var SampleApp = function() {
                         Date(Date.now() ), self.ipaddress, self.port);
         });
 		
-		self.app.use(express.static(__dirname + '/client'));
+		self.app.use(bodyParser.json());
+        self.app.use(express.static(__dirname + '/client'));
+
+        self.app.post("/registerUser", function(request, response){
+            console.log(request.body);
+			db.login.insert(request.body, function(err, record){
+				if(err){
+					console.log(err);
+				}
+				else{
+					response.json(record);
+				}
+			});
+        });
+		
+		
+		self.app.post("/validateLogin", function(request, response){
+            console.log(request.body);
+			db.login.find({username:request.body.username,password:request.body.password}, function(err, record){
+				if(err){
+					console.log("User name and password doesn't match");
+				}
+				else{
+					response.json(record);
+				}
+			});
+        });
+
     };
 
 };   /*  Sample Application.  */
