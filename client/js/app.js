@@ -135,7 +135,7 @@ GameDB.controller('LoginController', function ($scope, $http, $location) {
 })
 
 GameDB.controller('GameCtrl', function ($scope, $http) {
-    var URL = "http://net4.ccs.neu.edu/home/rasala/simpleproxy/simpleproxy.aspx?url=|http://www.giantbomb.com/api/search/?api_key=2b4e4a8e443d2571c5a9f09b0024184afc4674f1&limit=12&format=json&query=type&resources=game&callback=ewq|";
+    var URL = "http://net4.ccs.neu.edu/home/rasala/simpleproxy/simpleproxy.aspx?url=|http://www.giantbomb.com/api/search/?api_key="+key"+&limit=12&format=json&query=type&resources=game&callback=ewq|";
 
     $scope.getGameList = function () {
         var game = $scope.nameOfGame;
@@ -156,19 +156,7 @@ GameDB.controller('GameCtrl', function ($scope, $http) {
     }
 });
 
-/*GameDB.controller('LatestGameCtrl', function ($scope, $http) {
-    var URL = "http://net4.ccs.neu.edu/home/rasala/simpleproxy/simpleproxy.aspx?url=|http://www.giantbomb.com/api/games/?api_key=2b4e4a8e443d2571c5a9f09b0024184afc4674f1&limit=20&filter=expected_release_year:2014,expected_release_month:12&format=json&callback=ewq|";
 
-
-        $http.get(url).success(function (response) {
-            $scope.gameslist = response.results;
-            
-
-            console.log($scope.gameslist);
-            $scope.currentitem = response.results[0];
-
-        }); 
-});*/
 
 GameDB.controller('LatestGameCtrl', function ($scope, $http) {
     $http.get("http://net4.ccs.neu.edu/home/rasala/simpleproxy/simpleproxy.aspx?url=|http://www.giantbomb.com/api/games/?api_key=2b4e4a8e443d2571c5a9f09b0024184afc4674f1&limit=20&filter=expected_release_year:2014,expected_release_month:12&format=json&callback=ewq|").success(function (data) {
@@ -184,10 +172,9 @@ GameDB.controller('Reviews', function ($scope) {
     $(function () {
 
 
-        //    $("body").append('<div class="news-holder" id="news-holder"></div>');
-        //document.write('<div class="news-holder" id="news-holder"></div>')
+        
         var feedpointer = new google.feeds.Feed("http://www.giantbomb.com/feeds/reviews/");
-        //feedpointer.setNumEntries(1) //Show 1 entry only
+       
         feedpointer.load(formatoutput)
 
 
@@ -196,17 +183,17 @@ GameDB.controller('Reviews', function ($scope) {
                 var rssoutput = ""
                 var thefeeds = result.feed.entries
                 for (var i = 0; i < thefeeds.length; i++) {
-                    var entrydate = new Date(thefeeds[i].publishedDate) //get date of entry
+                    var entrydate = new Date(thefeeds[i].publishedDate) 
                     var entrydatestr = ' ' + entrydate.getFullYear() + "/" + (entrydate.getMonth() + 1) + "/" + entrydate.getDate()
                     rssoutput += "<h1><ul class='news-headlines'> <li class='selected'></li></ul><div class='news-preview'><div class='news-content'><a href='" + thefeeds[i].link + "'>" + thefeeds[i].title + "</a></u></h1>" + "<h3>" + "Reviews release Date:" + entrydatestr + "</h3>" + "<br />" + thefeeds[i].content + "</p></br></div></div> <hr style='background:#F87431; border:0; height:7px' />"
 
                 }
-                //        document.getElementByID("news-holder").innerHTML = rssoutput
+                
                 var holder = $("#reviews-here");
-               // console.log(holder);
+               
                 holder.append(rssoutput);
             }
-            else //if error fetching feed, alert human readable error message
+            else 
                 alert(result.error.message)
         }
 
