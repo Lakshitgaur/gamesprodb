@@ -8,9 +8,9 @@
     <meta name="author" content="">
 
     <title>GamesPro DB</title>
-    
-        
-  
+
+
+
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
 
@@ -18,11 +18,18 @@
     <script src="js/angular-route.js"></script>
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
+    
     <script src="js/app.js"></script>
+    <script src="js/Controllers/LoginController.js"></script>
+    <script src="js/Controllers/GameCtrl.js"></script>
+    <script src="js/Controllers/Reviews.js"></script>
+    <script src="js/Controllers/LatestGameCtrl.js"></script>
+    <script src="js/Controllers/RegController.js"></script>
+    <script src="js/Controllers/GamesVid.js"></script>
+    
     <script src="js/controllers.js"></script>
     <script src="js/find_videos.js"></script>
-    <script src="js/googleOauth.js"></script>
-    <script src="js/angularOauth.js"></script>
+   
     <!-- Add custom CSS here -->
     <link href="css/business-casual.css" rel="stylesheet">
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
@@ -30,32 +37,31 @@
     <!-- Include Thumbelina CSS. -->
     <link rel="stylesheet" type="text/css" href="css/thumbelina.css" />
 
-  
+
     <script type="text/javascript">
         google.load("feeds", "1") //Load Google Ajax Feed API (version 1)
     </script>
     <script src="js/jquery.min.js"></script>
-    <script src="js/vertical.news.slider.min.js"></script>
-   
+
+
 
     <style type="text/css">
         /* Some styles for the containers */
-    
+
         #slider3 {
             position: relative;
             margin-top: 40px;
-            width: 1100px;
+            width: 100%;
             height: 400px;
             border-left: 1px solid #aaa;
             border-right: 1px solid #aaa;
             margin-bottom: 40px;
         }
     </style>
-    
+
 </head>
 
-<body id="body">
-
+<body id="body" ng-controller="ApplicationController">
 
     <canvas id="canvas"></canvas>
 
@@ -74,18 +80,24 @@
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <div class="collapse navbar-collapse navbar-ex1-collapse" ng-controller="GameCtrl">
                 <ul class="nav navbar-nav">
                     <li><img id="logo" src="img/logo.png" /></li>
-                    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-                    <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
-                    <li><a href="#searchGames"><i class="fa fa-comment"></i> Search Game</a></li>
-                    <li><a href="#upcomingvideo"><i class="fa fa-comment"></i> Videos</a>
-                    <li><a href="#reviews"><i class="fa fa-comment"></i> Reviews</a>
-                    <li><a href="#login"><i class="fa fa-comment"></i> Login</a>
+                    <li ng-if="isAuthorized"><a ng-click="retireveGame(currentUser)" href="" ><i class="fa fa-comment"></i>{{currentUser}}'s List</a></li>
+
+                    <li><a href="" ng-click="$back()"><i class="fa fa-home"></i>Home</a></li>
+
+                    <li><a href="#searchGames" onclick="$('.maindiv')[0].focus()"><i class="fa fa-comment"></i>Search Game</a></li>
+                    <li><a href="#upcomingvideo" onclick="$('.maindiv')[0].focus()"><i class="fa fa-comment"></i>Videos</a>
+                    <li><a href="#reviews" onclick="$('.maindiv')[0].focus()"><i class="fa fa-comment"></i>Reviews</a>
+                    <li ng-if="!isAuthorized"><a href="#login" onclick="$('.maindiv')[0].focus()"><i class="fa fa-comment"></i>Login</a></li>
+                    <li ng-if="isAuthorized"><a href="#Logout" onclick="$('.maindiv')[0].focus()"><i class="fa fa-comment"></i>Logout</a></li>
 
 
-</ul>
+
+
+
+                </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -146,7 +158,7 @@
             </div>
         </div>
 
-        <div ng-view ></div>
+        <div class="maindiv" tabindex="1" ng-view></div>
 
         <div class="row">
             <div class="box">
@@ -155,7 +167,7 @@
                     <div class="row">
                         <div class="box">
                             <div class="col-lg-12">
-
+                               
                                 <hr style="background:#F87431; border:0; height:7px" />
                                 <h2 class="intro-text text-center">
                                     Upcoming<strong> Games</strong>
@@ -168,64 +180,65 @@
 
                                 <hr style="background:#F87431; border:0; height:7px" />
 
-                                
-                               
+
+
                             </div>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
                             
-                               <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                                <div id="slider3">
-                                    <div class="thumbelina-but vert top">&#708;</div>
-                                    <ul>
-                                        
-                                        <li ng-repeat="g in gamelist"><a href="{{g.site_detail_url}}"><img class="img-responsive " ng-src={{g.image.super_url}} alt="" /></a></li>
-
-                                    </ul>
-                                    <div class="thumbelina-but vert bottom">&#709;</div>
-                                </div>
-
+                            <div id="slider3">
+                                <div class="thumbelina-but vert top">&#708;</div>
+                                <ul>
+                                   
+                                    <li ng-repeat="g in gamelist"><a href="{{g.site_detail_url}}"><h2><u>{{g.name}}</u></h2></a><a href="{{g.site_detail_url}}"><img class="img-responsive " ng-src={{g.image.medium_url}} alt="" /></a><br /><br /><br /></li>
+                                 
+                                </ul>
+                                <div class="thumbelina-but vert bottom">&#709;</div>
                             </div>
+
                         </div>
                     </div>
-
                 </div>
+
             </div>
+        </div>
 
 
 
-            <div class="row">
-                <div class="box">
-                    <div class="col-lg-12">
+        <div class="row">
+            <div class="box">
+                <div class="col-lg-12">
 
-                        <div class="row">
-                            <div class="box">
-                                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="box">
+                            <div class="col-lg-12">
 
-                                    <hr style="background:#F87431; border:0; height:7px" />
-                                    <h2 class="intro-text text-center">
-                                        Latest<strong> Game News</strong>
+                                <hr style="background:#F87431; border:0; height:7px" />
+                                <h2 class="intro-text text-center">
+                                    Latest<strong> Game News</strong>
 
-                                    </h2>
-
-
-                                    <hr class="visible-xs">
+                                </h2>
 
 
-                                    <hr style="background:#F87431; border:0; height:7px" />
+                                <hr class="visible-xs">
 
-                                    <script type="text/javascript" src="js/News_feed.js"></script>
-                                </div>
+
+                                <hr style="background:#F87431; border:0; height:7px" />
+
+                                <script type="text/javascript" src="js/News_feed.js"></script>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <!-- /.container -->
 
@@ -242,10 +255,10 @@
     <script src="js/bootstrap.js"></script>
     <script>
 
-    // Activates the Carousel
-    $('.carousel').carousel({
-        interval: 5000
-    })
+        // Activates the Carousel
+        $('.carousel').carousel({
+            interval: 5000
+        })
     </script>
     <script src="js/jquery.als-1.7.min.js"></script>
 
@@ -253,21 +266,13 @@
 
 
     </script>
-   
+
     <script type="text/javascript" src="js/Reviews.js"></script>
-    
+
     <script type="text/javascript">
         $(function () {
 
-            $('#slider1').Thumbelina({
-                $bwdBut: $('#slider1 .left'),    // Selector to left button.
-                $fwdBut: $('#slider1 .right')    // Selector to right button.
-            });
-
-            $('#slider2').Thumbelina({
-                $bwdBut: $('#slider2 .left'),    // Selector to left button.
-                $fwdBut: $('#slider2 .right')    // Selector to right button.
-            });
+          
 
             $('#slider3').Thumbelina({
                 orientation: 'vertical',         // Use vertical mode (default horizontal).

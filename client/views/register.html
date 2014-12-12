@@ -4,51 +4,51 @@
     <div class="box">
         <div class="col-lg-12">
 
-
-
-            <div id="legend">
-                <legend class="">Register</legend>
-            </div>
-            <div class="control-group">
-                <!-- Username -->
-                <label class="control-label" for="username">Username</label>
-                <div class="controls">
-                    <input type="text" id="username" ng-model="username" name="username" placeholder="" class="input-xlarge">
-                    <p class="help-block">Username can contain any letters or numbers, without spaces</p>
+            <form role="form" ng-submit="register()">
+                <div class="col-lg-6">
+                    <div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"></span>Required Field</strong></div>
+                    <div class="form-group">
+                        <label for="InputName">Enter Username</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="username" name="username" id="InputName" placeholder="Enter Username" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputEmail">Enter Email</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" ng-model="email" name="email" placeholder="Enter Email" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputEmail">Enter Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" ng-model="password" name="password" placeholder="Enter Password" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputMessage">Enter Contact number</label>
+                        <div class="input-group">
+                            <input type="tel" id="InputMessage" class="form-control" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-info pull-right">
                 </div>
-            </div>
+            </form>
+            
 
-            <div class="control-group">
-                <!-- E-mail -->
-                <label class="control-label" for="email">E-mail</label>
-                <div class="controls">
-                    <input type="text" id="email" ng-model="email" name="email" placeholder="" class="input-xlarge">
-                    <p class="help-block">Please provide your E-mail</p>
-                </div>
-            </div>
 
-            <div class="control-group">
-                <!-- Password-->
-                <label class="control-label" for="password">Password</label>
-                <div class="controls">
-                    <input type="password" id="password" ng-model="password" name="password" placeholder="" class="input-xlarge">
-                    <p class="help-block">Password should be at least 4 characters</p>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <!-- Password -->
-                <label class="control-label" for="password_confirm">Password (Confirm)</label>
-                <div class="controls">
-                    <input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge">
-                    <p class="help-block">Please confirm password</p>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <!-- Button -->
-                <div class="controls">
-                    <button class="btn btn-success" ng-click="register()">Register</button>
+            
+            <div class="col-lg-5 col-md-push-1">
+                <div class="col-md-12">
+                    
+                    
+                    <div class="alert alert-danger" ng-if="errormsg">
+                        <span class="glyphicon glyphicon-remove"></span><strong> {{errrrrmsg}} </strong>
+                    </div>
                 </div>
             </div>
 

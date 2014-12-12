@@ -1,6 +1,6 @@
 ﻿var GameDB = angular.module('GameDB', [
   'ngRoute',
-  'phonecatControllers', 'googleOauth'
+  
 ]);
 
 GameDB.config(['$routeProvider',
@@ -39,16 +39,24 @@ GameDB.config(['$routeProvider',
                
 
            }).
+           when('/Gamelist', {
+               templateUrl: 'views/Gamelist.html',
+
+            }).
       
           
       when('/loginsucss', {
           templateUrl: 'views/loginsucss.html',
-          
-
-          controller: 'LoginController'
+          Controller: 'GameCtrl'
+       
 
       }).
+          when('/Logout', {
+              templateUrl: 'views/Logout.html',
+              //Controller: 'GameCtrl'
 
+
+          }).
            when('/loginunssucss', {
                templateUrl: 'views/loginunssucss.html',
 
@@ -61,52 +69,111 @@ GameDB.config(['$routeProvider',
         });
   }]);
 
+GameDB.service('Session', function () {
+    this.create = function (sessionId, userId, username) {
+        this.id = sessionId;
+        this.userId = userId;
+        this.username = username;
+        console.log("i am in session controller");
+    };
+    this.destroy = function () {
+        this.id = null;
+        this.userId = null;
+        this.username = null;
+    };
+    return this;
+});
 
+GameDB.factory('AuthService', function ($http, Session) {
+    var authService = {};
 
-GameDB.controller('GamesVid', function ($scope) {
-    $scope.search = function () {
-        document.getElementById("result").innerHTML = "loading...";
-        //var query = document.getElementById("query").value;
-        //query = encodeURIComponent(query);
-        var jsonpURL = "http://gdata.youtube.com/feeds/videos?vq=upcominggames&max-results=50&alt=json-in-script&callback=listVideos";
-        // var jsonpURL = "http://gdata.youtube.com/feeds/videos?vq=" + query + "&max-results=50&alt=json-in-script&callback=listVideos";
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = jsonpURL;
-        var head = document.getElementsByTagName("head")[0];
-        head.appendChild(script);
+    authService.login = function (credentials) {
+       // console.log(credentials);
+        return $http.post('/validateLogin', credentials)
+          .then(function (res) {
+              console.log(res.data[0].username);
+              Session.create(res.data[0]._id, res.data[0]._id, res.data[0].username);
+              return res.data[0].username;
+          });
+    };
+    console.log("i am in Autheticatedervice");
+    authService.isAuthenticated = function () {
+        return !!Session.userId;
+    };
+
+    return authService;
+});
+
+GameDB.controller('ApplicationController', function ($scope,
+
+                                               AuthService, $location) {
+    //$scope.errmsg = "";
+    $scope.errormsg = false;
+
+    $scope.seterrormsg = function () {
+        $scope.errormsg = true;
+        console.log($scope.errormsg)
     }
-});
-
-
-GameDB.controller('RegController', function ($scope, $http, $location) {
-    $scope.register = function () {
-        var regCredentials = {};
-        regCredentials["username"] = $scope.username;
-        regCredentials["password"] = $scope.password;
-        regCredentials["email"] = $scope.email;
-        console.log(regCredentials);
-        $http.post("/registerUser", regCredentials)
-            .success(function (response) {
-                $location.path("regsuccess");
-            });
+    $scope.geterrormsg = function () {
+        return $scope.errormsg ;
+        
     }
-})
 
-GameDB.controller('homeCtrl', function ($scope) {
-    // create a message to display in our view
-    $scope.message = 'Everyone come and see how good I look!';
+
+
+    $scope.seterr = function (msg)
+    {
+        $scope.errormsg = "true";
+        $scope.errmsg = msg;
+        console.log($scope.errmsg);
+    }
+
+    $scope.$back = function () {
+        $location.path("reviews");
+    };
+    
+    $scope.logoutmsg = null;
+    $scope.logout = function () {
+        $scope.isAuthorized = false;
+        $scope.currentUser = null;
+        $scope.logoutmsg = "You are successfully logged out";
+        $location.path("");
+    }
+
+    $scope.isAuthorized = false;
+    $scope.setAuthorization=function(value)
+    {
+        $scope.isAuthorized = value;
+    }
+
+    $scope.setGamelist = function (gamelist) {
+        $scope.myGamelist = gamelist;
+
+    };
+    $scope.currentUser = null;
+    // $scope.userRoles = USER_ROLES;
+    //  $scope.isAuthorized = AuthService.isAuthorized;
+    //$scope.isAuthorized = true;
+    //console.log($scope.isAuthorized);
+    $scope.parentname = "abc";
+    $scope.setCurrentUser = function (user) {
+        $scope.currentUser = user;
+
+    };
 });
 
-GameDB.controller('AbtCtrl', function ($scope) {
-    $scope.message = 'Look! I am an about page.';
+
+GameDB.constant('AUTH_EVENTS', {
+    loginSuccess: 'auth-login-success',
+    loginFailed: 'auth-login-failed',
+    logoutSuccess: 'auth-logout-success',
+    sessionTimeout: 'auth-session-timeout',
+    notAuthenticated: 'auth-not-authenticated',
+    notAuthorized: 'auth-not-authorized'
 });
 
-GameDB.controller('BlogCtrl', function ($scope) {
-    $scope.message = 'Contact us! JK. This is just a demo.';
-});
 
-GameDB.controller('LoginController', function ($scope, $http, $location) {
+/*GameDB.controller('LoginController', function ($scope, $http, $location) {
     $scope.login = function () {
         $scope.userdetail = "";
         var loginCredentials = {};
@@ -133,69 +200,11 @@ GameDB.controller('LoginController', function ($scope, $http, $location) {
             });
     }
 })
-
-GameDB.controller('GameCtrl', function ($scope, $http) {
-    var URL = "http://net4.ccs.neu.edu/home/rasala/simpleproxy/simpleproxy.aspx?url=|http://www.giantbomb.com/api/search/?api_key="+key"+&limit=12&format=json&query=type&resources=game&callback=ewq|";
-
-    $scope.getGameList = function () {
-        var game = $scope.nameOfGame;
-        var plat = "PS2";
-        var url = URL.replace("type", game);
-
-        $http.get(url).success(function (response) {
-            $scope.gameslist = response.results;
-            console.log($scope.gameslist);
-
-
-        });
-    }
-    $scope.show_games = function (pathurl) {
-
-        console.log(pathurl)
-        $location.path(pathurl)
-    }
-});
+*/
 
 
 
-GameDB.controller('LatestGameCtrl', function ($scope, $http) {
-    $http.get("http://net4.ccs.neu.edu/home/rasala/simpleproxy/simpleproxy.aspx?url=|http://www.giantbomb.com/api/games/?api_key=2b4e4a8e443d2571c5a9f09b0024184afc4674f1&limit=20&filter=expected_release_year:2014,expected_release_month:12&format=json&callback=ewq|").success(function (data) {
-        var jsonString = angular.toJson(data.results);
-        
-        $scope.gamelist = angular.fromJson(jsonString);
-    });
-});
 
 
 
-GameDB.controller('Reviews', function ($scope) {
-    $(function () {
 
-
-        
-        var feedpointer = new google.feeds.Feed("http://www.giantbomb.com/feeds/reviews/");
-       
-        feedpointer.load(formatoutput)
-
-
-        function formatoutput(result) {
-            if (!result.error) {
-                var rssoutput = ""
-                var thefeeds = result.feed.entries
-                for (var i = 0; i < thefeeds.length; i++) {
-                    var entrydate = new Date(thefeeds[i].publishedDate) 
-                    var entrydatestr = ' ' + entrydate.getFullYear() + "/" + (entrydate.getMonth() + 1) + "/" + entrydate.getDate()
-                    rssoutput += "<h1><ul class='news-headlines'> <li class='selected'></li></ul><div class='news-preview'><div class='news-content'><a href='" + thefeeds[i].link + "'>" + thefeeds[i].title + "</a></u></h1>" + "<h3>" + "Reviews release Date:" + entrydatestr + "</h3>" + "<br />" + thefeeds[i].content + "</p></br></div></div> <hr style='background:#F87431; border:0; height:7px' />"
-
-                }
-                
-                var holder = $("#reviews-here");
-               
-                holder.append(rssoutput);
-            }
-            else 
-                alert(result.error.message)
-        }
-
-    });
-});

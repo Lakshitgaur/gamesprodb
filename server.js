@@ -4,14 +4,19 @@ var express = require('express');
 var fs      = require('fs');
 var mongojs = require('mongojs');
 var bodyParser = require('body-parser');
-var db = mongojs("gamesprodb",["login"]);
+var connectionString = process.env.OPENSHIFT_MONGODB_DB_URL ? process.env.OPENSHIFT_MONGODB_DB_URL+"gamesprodb" : "gamesprodb";
+//var db = mongojs(connectionString,["login","Favourite"]);
+//var db = mongojs.connect("gamesprodb",["login","Favourite"]);
+
+
+var db = mongojs(connectionString,["login","Favourite"]);
 
 /**
  *  Define the sample application.
  */
 var SampleApp = function() {
 
-    //  Scope.
+    
     var self = this;
 
 
@@ -160,7 +165,64 @@ var SampleApp = function() {
 					response.json(record);
 				}
 			});
+			
         });
+		
+		self.app.post("/AddGame", function(request, response){
+		//console.log("hey I am addGame");
+            console.log(request.body);
+			db.Favourite.insert(request.body, function(err, record){
+				if(err){
+					console.log(err);
+				}
+				else{
+					response.json(record);
+				}
+			});
+			
+			
+			
+        });
+		
+		self.app.get("/RetireveGame/:name", function(request, response){
+		console.log("hey I am retrieve");
+		var name=request.params.name;
+          //  console.log(request.body);
+			//console.log(name);
+			db.Favourite.find({ user: name }, function(err, record){
+				if(err){
+					console.log(err);
+				}
+				else{
+					response.json(record);
+				}
+			});
+			
+			
+			
+        });
+		
+		
+		self.app.delete("/DeletegameList/:_id", function (req, res) {
+    var id = req.params._id;
+    console.log(id);
+    db.Favourite.remove({ _id: mongojs.ObjectId(id) }, function (err, doc) {
+        res.json(doc);
+    });
+
+});
+		
+		
+		
+		self.app.get("/RetriveAll", function(request, response){
+				//console.log(request.body);
+{db.Favourite.find(function(err,data)
+	{response.json(data);
+
+	});
+
+	}});
+		
 		
 		
 		self.app.post("/validateLogin", function(request, response){
@@ -173,6 +235,19 @@ var SampleApp = function() {
 					response.json(record);
 				}
 			});
+			
+        });
+		self.app.post("/getreviews", function(request, response){
+            console.log(request.body);
+			db.login.find({username:request.body.username,password:request.body.password}, function(err, record){
+				if(err){
+					console.log("User name and password doesn't match");
+				}
+				else{
+					response.json(record);
+				}
+			});
+			
         });
 
     };

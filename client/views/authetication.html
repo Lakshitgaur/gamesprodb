@@ -4,14 +4,39 @@
     <div class="box">
         <div class="col-lg-12">
 
-            <div class="wrapper">
-                <h2 class="form-signin-heading">Please login</h2>
-                <input type="text" class="form-control" ng-model="username" name="username" placeholder="Email Address" required="" autofocus="" />
-                <input type="password" class="form-control" ng-model="password" name="password" placeholder="Password" required="" />
-                <label class="checkbox">
-                    <a class="btn-link" href="#register">Register</a>
-                </label>
-                <button class="btn btn-lg btn-primary btn-block" ng-click="login()">Login</button>
+            
+
+
+
+                <form name="loginForm" ng-controller="LoginController"
+                      ng-submit="login(credentials)">
+                    <div class="col-lg-12">
+                        <div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"></span>Required Field</strong></div>
+                        <div class="form-group">
+                            <label for="InputName">Enter Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="credentials.username"  name="username" id="InputName" placeholder="Enter Name" required autofocus>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="InputEmail">Enter Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" ng-model="credentials.password" name="password" placeholder="Enter password" required>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                            </div>
+                        </div>
+                        
+                        
+                        <button type="submit" class="btn btn-lg btn-primary btn-block">Login</button>
+                    </div><br /><br />
+                    <label class="checkbox">
+                        <a class="btn-link" href="#register">Register</a>
+                    </label>
+                </form>
+                
+            </div>
+                {{currentUser}}
             </div>
         </div>
     </div>
